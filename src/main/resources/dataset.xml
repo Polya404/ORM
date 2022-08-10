@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <record>
+        <name>Gaile Alfonso</name>
+        <age>32</age>
+        <salary>5347</salary>
+        <position>Cost Accountant</position>
+        <dateOfBirth>2022-08-05</dateOfBirth>
+    </record>
+    <record>
+        <name>Noni Golsthorp</name>
+        <age>52</age>
+        <salary>6222</salary>
+        <position>Civil Engineer</position>
+        <dateOfBirth>2022-06-06</dateOfBirth>
+    </record>
+    <record>
+        <name>Lorrin Bertholin</name>
+        <age>31</age>
+        <salary>3331</salary>
+        <position>Developer IV</position>
+        <dateOfBirth>2022-05-01</dateOfBirth>
+    </record>
+    <record>
+        <name>Tamera Vaugham</name>
+        <age>41</age>
+        <salary>592</salary>
+        <position>Accounting Assistant IV</position>
+        <dateOfBirth>2021-12-06</dateOfBirth>
+    </record>
+    <record>
+        <name>Susanetta Pitkaithly</name>
+        <age>47</age>
+        <salary>8548</salary>
+        <position>Business Systems Development Analyst</position>
+        <dateOfBirth>2021-12-05</dateOfBirth>
+    </record>
+    <record>
+        <name>Colleen Frere</name>
+        <age>28</age>
+        <salary>1414</salary>
+        <position>Software Consultant</position>
+        <dateOfBirth>2022-06-17</dateOfBirth>
+    </record>
+    <record>
+        <name>Cecilius Mariel</name>
+        <age>64</age>
+        <salary>5847</salary>
+        <position>Media Manager III</position>
+        <dateOfBirth>2022-06-18</dateOfBirth>
+    </record>
+    <record>
+        <name>Rabbi Longo</name>
+        <age>18</age>
+        <salary>4450</salary>
+        <position>Dental Hygienist</position>
+        <dateOfBirth>2022-07-26</dateOfBirth>
+    </record>
+    <record>
+        <name>Noami Torre</name>
+        <age>36</age>
+        <salary>1866</salary>
+        <position>Community Outreach Specialist</position>
+        <dateOfBirth>2022-03-17</dateOfBirth>
+    </record>
+    <record>
+        <name>Ewell Jorgensen</name>
+        <age>46</age>
+        <salary>7869</salary>
+        <position>Registered Nurse</position>
+        <dateOfBirth>2022-01-12</dateOfBirth>
+    </record>
+</dataset>
