@@ -4,26 +4,43 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.io.File;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
 public interface ORMInterface {
     @SneakyThrows
-    <T> List<T> transform(DataInputSource content, Class<T> cls);
+    <T> List<T> readAll(DataReadWriteSource content, Class<T> cls);  //TODO
 
-    interface DataInputSource {
+    @SneakyThrows
+    default <T> void writeAll(DataReadWriteSource content, List<T> object){}  //TODO
+
+    interface DataReadWriteSource<T> {
+        T getContent();
     }
 
     @RequiredArgsConstructor
     @Getter
-    final class StringInputSource implements DataInputSource {
-        private final String content;
+    final class FileReadWriteSource implements DataReadWriteSource<String> {
+        private final File source;
+
+        @Override
+        public String getContent() {
+            return null;
+        }
     }
 
     @RequiredArgsConstructor
     @Getter
-    final class DatabaseInputSource implements DataInputSource {
-        private final ResultSet resultSet;
+    final class ConnectionReadWriteSource implements DataReadWriteSource<ResultSet> {
+        private final Connection source;
+        private final String table;
+
+        @Override
+        public ResultSet getContent() {
+            return null;
+        }
     }
 
 }

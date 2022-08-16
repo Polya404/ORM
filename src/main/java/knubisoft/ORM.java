@@ -2,12 +2,9 @@ package knubisoft;
 
 import knubisoft.parsingStrategy.*;
 import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,7 +13,7 @@ import java.util.function.Function;
 public class ORM {
 
     @SneakyThrows
-    public <T> List<T> transform(ORMInterface.DataInputSource inputSource, Class<T> cls) {
+    public <T> List<T> transform(ORMInterface.DataReadWriteSource inputSource, Class<T> cls) {
         Table table = convertToTable(inputSource);
         return convertTableToListOfClasses(table, cls);
     }
@@ -59,19 +56,19 @@ public class ORM {
         }).apply(value);
     }
 
-    private Table convertToTable(ORMInterface.DataInputSource dataInputSource) {
-        if (dataInputSource instanceof ORMInterface.DatabaseInputSource) {
+    private Table convertToTable(ORMInterface.DataReadWriteSource dataInputSource) {
+        if (dataInputSource instanceof ORMInterface.ConnectionReadWriteSource) {
             return new DatabaseParsingStrategy().
-                    parseToTable((ORMInterface.DatabaseInputSource) dataInputSource);
-        } else if (dataInputSource instanceof ORMInterface.StringInputSource) {
-            return getStringParsingStrategy((ORMInterface.StringInputSource) dataInputSource).
-                    parseToTable((ORMInterface.StringInputSource) dataInputSource);
+                    parseToTable((ORMInterface.ConnectionReadWriteSource) dataInputSource);
+        } else if (dataInputSource instanceof ORMInterface.FileReadWriteSource) {
+            return getStringParsingStrategy((ORMInterface.FileReadWriteSource) dataInputSource).
+                    parseToTable((ORMInterface.FileReadWriteSource) dataInputSource);
         } else {
             throw new UnsupportedOperationException("Unknown DataInputSource " + dataInputSource);
         }
     }
 
-    private ParsingStrategy<ORMInterface.StringInputSource> getStringParsingStrategy(ORMInterface.StringInputSource inputSource) {
+    private ParsingStrategy<ORMInterface.FileReadWriteSource> getStringParsingStrategy(ORMInterface.FileReadWriteSource inputSource) {
         String content = inputSource.getContent();
         char firstChar = content.charAt(0);
         return switch (firstChar) {

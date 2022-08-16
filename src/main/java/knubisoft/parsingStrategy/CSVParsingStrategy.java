@@ -8,13 +8,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CSVParsingStrategy implements ParsingStrategy<ORMInterface.StringInputSource> {
+public class CSVParsingStrategy implements ParsingStrategy<ORMInterface.FileReadWriteSource> {
 
     public static final String DELIMITER = ",";
     public static final String COMMENT = "--";
 
     @Override
-    public Table parseToTable(ORMInterface.StringInputSource content) {
+    public Table parseToTable(ORMInterface.FileReadWriteSource content) {
         List<String> lines = Arrays.asList(content.getContent().split(System.lineSeparator()));
         Map<Integer, String> mapping = buildMapping(lines.get(0));
         Map<Integer, Map<String, String>> result = buildTable(lines.subList(1, lines.size()), mapping);

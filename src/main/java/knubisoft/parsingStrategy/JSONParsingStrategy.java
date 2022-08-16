@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class JSONParsingStrategy implements ParsingStrategy<ORMInterface.StringInputSource> {
+public class JSONParsingStrategy implements ParsingStrategy<ORMInterface.FileReadWriteSource> {
 
     @SneakyThrows
     @Override
-    public Table parseToTable(ORMInterface.StringInputSource content) {
+    public Table parseToTable(ORMInterface.FileReadWriteSource content) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode tree = mapper.readTree(content.getContent());
         Map<Integer, Map<String, String>> result = buildTable(tree);

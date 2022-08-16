@@ -9,7 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DatabaseParsingStrategy implements ParsingStrategy<ORMInterface.DatabaseInputSource> {
+public class DatabaseParsingStrategy implements ParsingStrategy<ORMInterface.ConnectionReadWriteSource> {
 
     @SneakyThrows
     private Map<Integer, Map<String, String>> buildTable(ResultSet rs) {
@@ -30,8 +30,8 @@ public class DatabaseParsingStrategy implements ParsingStrategy<ORMInterface.Dat
     }
 
     @Override
-    public Table parseToTable(ORMInterface.DatabaseInputSource content) {
-        ResultSet rs = content.getResultSet();
+    public Table parseToTable(ORMInterface.ConnectionReadWriteSource content) {
+        ResultSet rs = content.getContent();
         Map<Integer, Map<String, String>> result = buildTable(rs);
         return new Table(result);
     }

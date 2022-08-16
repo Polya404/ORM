@@ -11,12 +11,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-public class XMLParsingStrategy implements ParsingStrategy<ORMInterface.StringInputSource> {
+public class XMLParsingStrategy implements ParsingStrategy<ORMInterface.FileReadWriteSource> {
     JSONParsingStrategy jsonParsingStrategy = new JSONParsingStrategy();
 
     @SneakyThrows
     @Override
-    public Table parseToTable(ORMInterface.StringInputSource content) {
+    public Table parseToTable(ORMInterface.FileReadWriteSource content) {
         // TODO
         XmlMapper xmlMapper = new XmlMapper();
         JsonNode tree = xmlMapper.readTree(content.getContent());
