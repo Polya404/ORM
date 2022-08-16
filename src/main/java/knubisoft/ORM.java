@@ -1,9 +1,6 @@
 package knubisoft;
 
-import knubisoft.parsingStrategy.CSVParsingStrategy;
-import knubisoft.parsingStrategy.JSONParsingStrategy;
-import knubisoft.parsingStrategy.ParsingStrategy;
-import knubisoft.parsingStrategy.XMLParsingStrategy;
+import knubisoft.parsingStrategy.*;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
@@ -19,12 +16,8 @@ import java.util.function.Function;
 public class ORM {
 
     @SneakyThrows
-    public <T> List<T> transform(File file, Class<T> cls) {
-        String content = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        ContentType contentType = guessContentTypeByContent(content);
-        ParsingStrategy parsingStrategy = createStrategyByContentType(contentType);
-
-        Table table = parsingStrategy.parseToTable(content);
+    public <T> List<T> transform(ORMInterface.DataInputSource inputSource, Class<T> cls) {
+        Table table = convertToTable(inputSource);
         return convertTableToListOfClasses(table, cls);
     }
 
@@ -66,34 +59,26 @@ public class ORM {
         }).apply(value);
     }
 
-    private ParsingStrategy createStrategyByContentType(ContentType contentType) {
-        switch (contentType) {
-            case JSON:
-                return new JSONParsingStrategy();
-            case XML:
-                return new XMLParsingStrategy();
-            case CSV:
-                return new CSVParsingStrategy();
-            default:
-                throw new UnsupportedOperationException("Unknown strategy " + contentType);
+    private Table convertToTable(ORMInterface.DataInputSource dataInputSource) {
+        if (dataInputSource instanceof ORMInterface.DatabaseInputSource) {
+            return new DatabaseParsingStrategy().
+                    parseToTable((ORMInterface.DatabaseInputSource) dataInputSource);
+        } else if (dataInputSource instanceof ORMInterface.StringInputSource) {
+            return getStringParsingStrategy((ORMInterface.StringInputSource) dataInputSource).
+                    parseToTable((ORMInterface.StringInputSource) dataInputSource);
+        } else {
+            throw new UnsupportedOperationException("Unknown DataInputSource " + dataInputSource);
         }
     }
 
-    private ContentType guessContentTypeByContent(String content) {
+    private ParsingStrategy<ORMInterface.StringInputSource> getStringParsingStrategy(ORMInterface.StringInputSource inputSource) {
+        String content = inputSource.getContent();
         char firstChar = content.charAt(0);
-        switch (firstChar) {
-            case '{':
-            case '[':
-                return ContentType.JSON;
-            case '<':
-                return ContentType.XML;
-            default:
-                return ContentType.CSV;
-        }
-    }
-
-    enum ContentType {
-        CSV, XML, JSON
+        return switch (firstChar) {
+            case '{', '[' -> new JSONParsingStrategy();
+            case '<' -> new XMLParsingStrategy();
+            default -> new CSVParsingStrategy();
+        };
     }
 
 
