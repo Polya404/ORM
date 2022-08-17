@@ -1,27 +1,34 @@
 package knubisoft;
 
 import knubisoft.parsingStrategy.*;
+import knubisoft.writeStrategy.CSVWriteStrategy;
+import knubisoft.writeStrategy.JSONWriteStrategy;
+import knubisoft.writeStrategy.WriteStrategy;
+import knubisoft.writeStrategy.XMLWriteStrategy;
 import lombok.SneakyThrows;
+import org.apache.commons.io.FilenameUtils;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
-public class ORM {
-
-    @SneakyThrows
-    public <T> List<T> transform(ORMInterface.DataReadWriteSource inputSource, Class<T> cls) {
+public class ORM implements ORMInterface {
+    @Override
+    public <T> List<T> readAll(DataReadWriteSource<?> inputSource, Class<T> cls) {
         Table table = convertToTable(inputSource);
         return convertTableToListOfClasses(table, cls);
     }
 
     private <T> List<T> convertTableToListOfClasses(Table table, Class<T> cls) {
         List<T> result = new ArrayList<>();
-        for (int index = 0; index < table.size(); index++) {
-            Map<String, String> row = table.getTableRowByIndex(index);
+        for (int i = 0; i < table.size(); i++) {
+            Map<String, String> row = table.getTableRowByIndex(i);
             T instance = reflectTableRowToClass(row, cls);
             result.add(instance);
         }
@@ -31,7 +38,7 @@ public class ORM {
     @SneakyThrows
     private <T> T reflectTableRowToClass(Map<String, String> row, Class<T> cls) {
         T instance = cls.getDeclaredConstructor().newInstance();
-        for (Field each: cls.getDeclaredFields()) {
+        for (Field each : cls.getDeclaredFields()) {
             each.setAccessible(true);
             String value = row.get(each.getName());
             if (value != null) {
@@ -41,7 +48,7 @@ public class ORM {
         return instance;
     }
 
-    private static Object transformValueToFieldType(Field field, String value) {
+    private Object transformValueToFieldType(Field field, String value) {
         Map<Class<?>, Function<String, Object>> typeToFunction = new LinkedHashMap<>();
         typeToFunction.put(String.class, s -> s);
         typeToFunction.put(int.class, Integer::parseInt);
@@ -56,19 +63,49 @@ public class ORM {
         }).apply(value);
     }
 
-    private Table convertToTable(ORMInterface.DataReadWriteSource dataInputSource) {
-        if (dataInputSource instanceof ORMInterface.ConnectionReadWriteSource) {
-            return new DatabaseParsingStrategy().
-                    parseToTable((ORMInterface.ConnectionReadWriteSource) dataInputSource);
-        } else if (dataInputSource instanceof ORMInterface.FileReadWriteSource) {
-            return getStringParsingStrategy((ORMInterface.FileReadWriteSource) dataInputSource).
-                    parseToTable((ORMInterface.FileReadWriteSource) dataInputSource);
+    private Table convertToTable(DataReadWriteSource<?> inputSource) {
+        if (inputSource instanceof ConnectionReadWriteSource) {
+            ConnectionReadWriteSource databaseSource = (ConnectionReadWriteSource) inputSource;
+            return new DatabaseParsingStrategy().parseToTable(databaseSource);
+        } else if (inputSource instanceof FileReadWriteSource) {
+            FileReadWriteSource fileSource = (FileReadWriteSource) inputSource;
+            return getStringParsingStrategy(fileSource).parseToTable(fileSource);
         } else {
-            throw new UnsupportedOperationException("Unknown DataInputSource " + dataInputSource);
+            throw new UnsupportedOperationException("Unknown DataInputSource " + inputSource);
         }
     }
 
-    private ParsingStrategy<ORMInterface.FileReadWriteSource> getStringParsingStrategy(ORMInterface.FileReadWriteSource inputSource) {
+
+
+
+
+    @Override
+    public <T> void writeAll(DataReadWriteSource target, List<T> object) {
+        if (target instanceof FileReadWriteSource) {
+            WriteStrategy strategy = getWriteStrategy(target);
+            writeToFile(strategy, object);
+        }
+        if (target instanceof ConnectionReadWriteSource){
+            //TODO
+        }
+    }
+
+    private void writeToFile(WriteStrategy strategy, List<?> object) {
+        strategy.write(object);
+    }
+
+    private WriteStrategy getWriteStrategy(DataReadWriteSource target) {
+        String ext = FilenameUtils.getExtension(((FileReadWriteSource) target).getSource().getName());
+        if (ext.equals("json")) {
+            return new JSONWriteStrategy(((FileReadWriteSource) target).getSource());
+        }else if(ext.equals("xml")){
+            return new XMLWriteStrategy(((FileReadWriteSource) target).getSource());
+        }else {
+            return new CSVWriteStrategy(((FileReadWriteSource) target).getSource());
+        }
+    }
+
+    private ParsingStrategy<FileReadWriteSource> getStringParsingStrategy(FileReadWriteSource inputSource) {
         String content = inputSource.getContent();
         char firstChar = content.charAt(0);
         return switch (firstChar) {
@@ -77,6 +114,4 @@ public class ORM {
             default -> new CSVParsingStrategy();
         };
     }
-
-
 }

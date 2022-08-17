@@ -8,6 +8,8 @@ import java.io.File;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,23 +17,41 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
+    private static final ORMInterface ORM = new ORM();
 
     public static void main(String[] args) throws Exception {
+        URL url1 = Main.class.getClassLoader().getResource("TargetFile.json");
+        URL url2 = Main.class.getClassLoader().getResource("TargetFile.xml");
+        URL url3 = Main.class.getClassLoader().getResource("TargetFile.csv");
+
+        URL url4 = Main.class.getClassLoader().getResource("dataset.xml");
+        URL url5 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
+
+        DataReadWriteSource<?> file = new FileReadWriteSource(new File(url4.toURI()));
+        List<Person> list = ORM.readAll(file,Person.class);
+
+        DataReadWriteSource<?> target = new FileReadWriteSource(new File(url3.toURI()));
+        //ORM.writeAll(target, list);
+        //ORM.writeAll(target, list);
+        ORM.writeAll(target, list);
+
+//        DBService dbService = new DBService();
+//        dbService.withConnection(connection -> {
+//            process(connection);
+//            return null;
+//        });
+
+    }
+
+    public static void process(Connection connection) {
         URL url1 = Main.class.getClassLoader().getResource("dataset.xml");
         URL url2 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
 
-        ORMInterface _interface = (ORMInterface) new ORM();
+        List<Person> result;
 
-        List<Person> result = _interface.readAll(new ORMInterface.FileReadWriteSource(new File(url1.toURI())), Person.class);
-        result.add(new Person("Ilya Voronin", BigInteger.valueOf(23L), BigInteger.valueOf(1999L), "Manager", LocalDate.now(), 0F));
-        _interface.writeAll(new ORMInterface.FileReadWriteSource(new File(url1.toURI())), result);
-
-        DBService dbService = new DBService();
-
-        result = _interface.readAll(new ORMInterface.ConnectionReadWriteSource(dbService.connection(), "students"), Person.class);
-        result.add(new Person("Ilya Voronin", BigInteger.valueOf(23L), BigInteger.valueOf(1999L), "Manager", LocalDate.now(), 0F));
-        _interface.writeAll(new ORMInterface.ConnectionReadWriteSource(dbService.connection(), "person"), result);
-
+        DataReadWriteSource<ResultSet> rw = new ConnectionReadWriteSource(connection, "person");
+        result = ORM.readAll(rw, Person.class);
+        //result.add(new Person("Ilya Vinnik", BigInteger.valueOf(23L), BigInteger.valueOf(1200L), "Manager", LocalDate.parse("1999-05-17"), 0F));
 
     }
 }

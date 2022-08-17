@@ -11,37 +11,15 @@ import java.util.List;
 
 public interface ORMInterface {
     @SneakyThrows
-    <T> List<T> readAll(DataReadWriteSource content, Class<T> cls);  //TODO
+    <T> List<T> readAll(DataReadWriteSource<?> inputSource, Class<T> cls);
 
     @SneakyThrows
-    default <T> void writeAll(DataReadWriteSource content, List<T> object){}  //TODO
+    default <T> void writeAll(DataReadWriteSource target, List<T> object){}  //TODO
 
-    interface DataReadWriteSource<T> {
-        T getContent();
-    }
 
-    @RequiredArgsConstructor
-    @Getter
-    final class FileReadWriteSource implements DataReadWriteSource<String> {
-        private final File source;
 
-        @Override
-        public String getContent() {
-            return null;
-        }
-    }
 
-    @RequiredArgsConstructor
-    @Getter
-    final class ConnectionReadWriteSource implements DataReadWriteSource<ResultSet> {
-        private final Connection source;
-        private final String table;
 
-        @Override
-        public ResultSet getContent() {
-            return null;
-        }
-    }
 
 }
 

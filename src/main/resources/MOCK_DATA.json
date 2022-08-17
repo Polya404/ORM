@@ -1,71 +1,71 @@
 [
   {
     "name": "Carney Shotbolt",
-    "age": 22,
-    "salary": 3833,
+    "age": "22",
+    "salary": "3833",
     "position": "Accountant III",
     "dateOfBirth": "2022-02-18"
   },
   {
     "name": "Dee dee Shakspeare",
-    "age": 30,
-    "salary": 7946,
+    "age": "30",
+    "salary": "7946",
     "position": "VP Quality Control",
     "dateOfBirth": "2022-02-23"
   },
   {
     "name": "Angie Cantle",
-    "age": 50,
-    "salary": 3859,
+    "age": "50",
+    "salary": "3859",
     "position": "Accountant IV",
     "dateOfBirth": "2021-11-06"
   },
   {
     "name": "Nicol Crosser",
-    "age": 42,
-    "salary": 9004,
+    "age": "42",
+    "salary": "9004",
     "position": "Product Engineer",
     "dateOfBirth": "2021-10-03"
   },
   {
     "name": "Euell Burniston",
-    "age": 58,
-    "salary": 471,
+    "age": "58",
+    "salary": "471",
     "position": "Help Desk Operator",
     "dateOfBirth": "2022-05-18"
   },
   {
     "name": "Dexter Norvel",
-    "age": 68,
-    "salary": 2796,
+    "age": "68",
+    "salary": "2796",
     "position": "Staff Accountant I",
     "dateOfBirth": "2022-03-12"
   },
   {
     "name": "Adoree Wilkenson",
-    "age": 57,
-    "salary": 7748,
+    "age": "57",
+    "salary": "7748",
     "position": "Financial Advisor",
     "dateOfBirth": "2021-11-09"
   },
   {
     "name": "Delcina Shutler",
-    "age": 32,
-    "salary": 1402,
+    "age": "32",
+    "salary": "1402",
     "position": "Structural Analysis Engineer",
     "dateOfBirth": "2022-06-14"
   },
   {
     "name": "Jacklyn Jerrems",
-    "age": 23,
-    "salary": 4507,
+    "age": "23",
+    "salary": "4507",
     "position": "Help Desk Technician",
     "dateOfBirth": "2022-07-09"
   },
   {
     "name": "Adrianna Dunnett",
-    "age": 74,
-    "salary": 8939,
+    "age": "74",
+    "salary": "8939",
     "position": "Design Engineer",
     "dateOfBirth": "2022-05-15"
   }

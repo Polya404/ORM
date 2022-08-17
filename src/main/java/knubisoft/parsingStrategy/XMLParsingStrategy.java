@@ -2,6 +2,7 @@ package knubisoft.parsingStrategy;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import knubisoft.FileReadWriteSource;
 import knubisoft.ORMInterface;
 import knubisoft.Table;
 import lombok.SneakyThrows;
@@ -11,13 +12,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-public class XMLParsingStrategy implements ParsingStrategy<ORMInterface.FileReadWriteSource> {
+public class XMLParsingStrategy implements ParsingStrategy<FileReadWriteSource> {
     JSONParsingStrategy jsonParsingStrategy = new JSONParsingStrategy();
 
     @SneakyThrows
     @Override
-    public Table parseToTable(ORMInterface.FileReadWriteSource content) {
-        // TODO
+    public Table parseToTable(FileReadWriteSource content) {
         XmlMapper xmlMapper = new XmlMapper();
         JsonNode tree = xmlMapper.readTree(content.getContent());
         Map<Integer, Map<String, String>> result = buildTable(tree);
