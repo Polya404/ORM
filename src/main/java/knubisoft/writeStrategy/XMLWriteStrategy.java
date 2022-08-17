@@ -27,7 +27,6 @@ public class XMLWriteStrategy implements WriteStrategy {
             } else {
                 xml = xmlMapper.writeValueAsString(o);
             }
-            System.out.println(xml);
             Files.write(Path.of(file.getPath()), xml.getBytes(), StandardOpenOption.APPEND);
         }
     }

@@ -23,6 +23,5 @@ public class Person {
     private BigInteger salary;
     private String position;
     //private LocalDate dateOfBirth;
-    private Float xxx;
 
 }

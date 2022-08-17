@@ -30,10 +30,12 @@ public class Main {
         DataReadWriteSource<?> file = new FileReadWriteSource(new File(url4.toURI()));
         List<Person> list = ORM.readAll(file,Person.class);
 
-        DataReadWriteSource<?> target = new FileReadWriteSource(new File(url3.toURI()));
-        //ORM.writeAll(target, list);
-        //ORM.writeAll(target, list);
-        ORM.writeAll(target, list);
+        DataReadWriteSource<?> target1 = new FileReadWriteSource(new File(url3.toURI()));
+        DataReadWriteSource<?> target2 = new FileReadWriteSource(new File(url2.toURI()));
+        DataReadWriteSource<?> target3 = new FileReadWriteSource(new File(url1.toURI()));
+        ORM.writeAll(target1, list);
+        ORM.writeAll(target2, list);
+        ORM.writeAll(target3, list);
 
 //        DBService dbService = new DBService();
 //        dbService.withConnection(connection -> {
