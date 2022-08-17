@@ -6,6 +6,8 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +20,9 @@ public class CSVWriteStrategy implements WriteStrategy {
     @SneakyThrows
     @Override
     public void write(List<?> list) {
+        Path path = Path.of(file.getPath());
+        Files.delete(Path.of(file.getPath()));
+        Files.createFile(path);
         try (PrintWriter pw = new PrintWriter(file)) {
             getPerson(list).stream()
                     .map(this::convertToCSV)

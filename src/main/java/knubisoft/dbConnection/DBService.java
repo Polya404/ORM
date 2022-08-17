@@ -11,7 +11,7 @@ import java.util.function.Function;
 public class DBService {
     public Connection connection() throws SQLException {
         return DriverManager
-                .getConnection("jdbc:mysql://localhost/student?allowPublicKeyRetrieval=true&useSSL=false"
+                .getConnection("jdbc:mysql://localhost/person?allowPublicKeyRetrieval=true&useSSL=false"
                         + "&user=root&password=rootroot&serverTimezone=UTC");
     }
 

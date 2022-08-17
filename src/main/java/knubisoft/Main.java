@@ -28,20 +28,20 @@ public class Main {
         URL url5 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
 
         DataReadWriteSource<?> file = new FileReadWriteSource(new File(url4.toURI()));
-        List<Person> list = ORM.readAll(file,Person.class);
+        //List<Person> list = ORM.readAll(file,Person.class);
 
         DataReadWriteSource<?> target1 = new FileReadWriteSource(new File(url3.toURI()));
         DataReadWriteSource<?> target2 = new FileReadWriteSource(new File(url2.toURI()));
         DataReadWriteSource<?> target3 = new FileReadWriteSource(new File(url1.toURI()));
-        ORM.writeAll(target1, list);
-        ORM.writeAll(target2, list);
-        ORM.writeAll(target3, list);
+//        ORM.writeAll(target1, list);
+//        ORM.writeAll(target2, list);
+//        ORM.writeAll(target3, list);
 
-//        DBService dbService = new DBService();
-//        dbService.withConnection(connection -> {
-//            process(connection);
-//            return null;
-//        });
+        DBService dbService = new DBService();
+        dbService.withConnection(connection -> {
+            process(connection);
+            return null;
+        });
 
     }
 
@@ -53,7 +53,7 @@ public class Main {
 
         DataReadWriteSource<ResultSet> rw = new ConnectionReadWriteSource(connection, "person");
         result = ORM.readAll(rw, Person.class);
-        //result.add(new Person("Ilya Vinnik", BigInteger.valueOf(23L), BigInteger.valueOf(1200L), "Manager", LocalDate.parse("1999-05-17"), 0F));
+        result.add(new Person("Ilya Vinnik", BigInteger.valueOf(23L), BigInteger.valueOf(1200L), "Manager"));
 
     }
 }

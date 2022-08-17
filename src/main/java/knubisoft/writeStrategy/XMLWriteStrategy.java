@@ -17,6 +17,9 @@ public class XMLWriteStrategy implements WriteStrategy {
     @SneakyThrows
     @Override
     public void write(List<?> list) {
+        Path path = Path.of(file.getPath());
+        Files.delete(Path.of(file.getPath()));
+        Files.createFile(path);
         XmlMapper xmlMapper = new XmlMapper();
         String xml = "";
         for (Object o : list) {

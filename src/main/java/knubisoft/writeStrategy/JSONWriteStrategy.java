@@ -16,6 +16,9 @@ public class JSONWriteStrategy implements WriteStrategy {
 
     @SneakyThrows
     public void write(List<?> list) {
+        Path path = Path.of(file.getPath());
+        Files.delete(Path.of(file.getPath()));
+        Files.createFile(path);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = "";
         for (Object o : list) {
