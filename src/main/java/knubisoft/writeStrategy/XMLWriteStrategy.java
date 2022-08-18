@@ -17,20 +17,8 @@ public class XMLWriteStrategy implements WriteStrategy {
     @SneakyThrows
     @Override
     public void write(List<?> list) {
-        Path path = Path.of(file.getPath());
-        Files.delete(Path.of(file.getPath()));
-        Files.createFile(path);
         XmlMapper xmlMapper = new XmlMapper();
-        String xml = "";
-        for (Object o : list) {
-            if (o.equals(list.get(0))) {
-                xml = "<?xml version='1.0' encoding='UTF-8'?>\n<dataset>\n" + xmlMapper.writeValueAsString(o);
-            } else if (o.equals(list.get(list.size() - 1))) {
-                xml = xmlMapper.writeValueAsString(o) + "\n</dataset>";
-            } else {
-                xml = xmlMapper.writeValueAsString(o);
-            }
-            Files.write(Path.of(file.getPath()), xml.getBytes(), StandardOpenOption.APPEND);
-        }
+        String xml = xmlMapper.writeValueAsString(list);
+        Files.write(Path.of(file.getPath()), xml.getBytes());
     }
 }

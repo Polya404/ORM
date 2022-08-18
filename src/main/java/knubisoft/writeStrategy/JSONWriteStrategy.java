@@ -16,21 +16,8 @@ public class JSONWriteStrategy implements WriteStrategy {
 
     @SneakyThrows
     public void write(List<?> list) {
-        Path path = Path.of(file.getPath());
-        Files.delete(Path.of(file.getPath()));
-        Files.createFile(path);
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = "";
-        for (Object o : list) {
-            if (o.equals(list.get(0))) {
-                jsonString = "[" + objectMapper.writeValueAsString(o) + ",";
-            }
-            else if (o.equals(list.get(list.size() - 1))) {
-                jsonString = objectMapper.writeValueAsString(o) + "]";
-            } else {
-                jsonString = objectMapper.writeValueAsString(o) + ",";
-            }
-            Files.write(Path.of(file.getPath()), jsonString.getBytes(), StandardOpenOption.APPEND);
-        }
+        String jsonString = objectMapper.writeValueAsString(list);
+        Files.write(Path.of(file.getPath()), jsonString.getBytes());
     }
 }

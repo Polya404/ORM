@@ -1,14 +1,15 @@
 package knubisoft.writeStrategy;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,39 +21,39 @@ public class CSVWriteStrategy implements WriteStrategy {
     @SneakyThrows
     @Override
     public void write(List<?> list) {
-        Path path = Path.of(file.getPath());
-        Files.delete(Path.of(file.getPath()));
-        Files.createFile(path);
-        try (PrintWriter pw = new PrintWriter(file)) {
-            getPerson(list).stream()
-                    .map(this::convertToCSV)
-                    .forEach(pw::println);
-        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        String s = objectMapper.writeValueAsString(getPerson(list));
+        Files.write(Path.of(file.getPath()), s.getBytes());
     }
 
     @SneakyThrows
-    public List<String[]> getPerson(List<?> list) {
-        List<String[]> res = new ArrayList<>();
+    public List<String> getPerson(List<?> list) {
         Class cls = list.get(0).getClass();
-        Field[] fields = cls.getDeclaredFields();
-        String[] first = new String[fields.length];
+        List<Field> fields = Arrays.asList(cls.getDeclaredFields());
+        List<String> result = new ArrayList<>();
+        result.add(convertToHeader(fields));
+        result.addAll(list.stream().map(item -> transform(item, fields)).collect(Collectors.toList()));
 
-        for (int i = 0; i < fields.length; i++) {
-            first[i] = fields[i].getName();
-        }
-        res.add(first);
-        String[] person = new String[fields.length];
-        for (Object o : list) {
-            int i = 0;
-            for (Field f : fields) {
-                f.setAccessible(true);
-                String s = String.valueOf(f.get(o));
+        return result;
+    }
+
+    @SneakyThrows
+    public String transform(Object o, List<Field> fields){
+        String[] person = new String[fields.size()];
+        for (int i = 0; i < fields.size(); i++) {
+                fields.get(i).setAccessible(true);
+                String s = String.valueOf(fields.get(i).get(o));
                 person[i] = s;
-                i++;
             }
-            res.add(person.clone());
+        return convertToCSV(person);
+    }
+
+    public String convertToHeader(List<Field> fields){
+        String[] str = new String[fields.size()];
+        for (int i = 0; i < fields.size(); i++) {
+            str[i] = fields.get(i).getName();
         }
-        return res;
+        return convertToCSV(str);
     }
 
     public String convertToCSV(String[] data) {
