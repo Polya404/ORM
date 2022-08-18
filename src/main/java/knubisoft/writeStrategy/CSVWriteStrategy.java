@@ -22,11 +22,12 @@ public class CSVWriteStrategy implements WriteStrategy {
     @SneakyThrows
     @Override
     public void write(List<?> list) {
-        FileUtils.writeStringToFile(file, String.join(System.lineSeparator(), getPerson(list)), StandardCharsets.UTF_8);
+        String content = String.join(System.lineSeparator(), convertToListOfHeaderAndData(list));
+        FileUtils.writeStringToFile(file,content, StandardCharsets.UTF_8);
     }
 
     @SneakyThrows
-    public List<String> getPerson(List<?> list) {
+    public List<String> convertToListOfHeaderAndData(List<?> list) {
         Class cls = list.get(0).getClass();
         List<Field> fields = Arrays.asList(cls.getDeclaredFields());
         List<String> result = new ArrayList<>();
@@ -47,11 +48,11 @@ public class CSVWriteStrategy implements WriteStrategy {
     }
 
     public String convertToHeader(List<Field> fields){
-        List<String> str = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
         for (Field f:fields){
-            str.add(f.getName());
+            headers.add(f.getName());
         }
-        return String.join(",", str);
+        return String.join(",", headers);
     }
 
 }
