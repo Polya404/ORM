@@ -23,7 +23,7 @@ public class CSVWriteStrategy implements WriteStrategy {
     public void write(List<?> list) {
         ObjectMapper objectMapper = new ObjectMapper();
         String s = objectMapper.writeValueAsString(getPerson(list));
-        Files.write(Path.of(file.getPath()), s.getBytes());
+        Files.write(Path.of(file.getPath()), toCsvString(s).getBytes());
     }
 
     @SneakyThrows
@@ -69,5 +69,11 @@ public class CSVWriteStrategy implements WriteStrategy {
             escapedData = "\"" + data + "\"";
         }
         return escapedData;
+    }
+
+    public String toCsvString(String data){
+        data = data.substring(2, data.length()-2);
+        data= data.replaceAll("\",\"", ",\n");
+        return data;
     }
 }
