@@ -1,5 +1,6 @@
-package knubisoft;
+package knubisoft.readWriteSources;
 
+import knubisoft.readWriteSources.DataReadWriteSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

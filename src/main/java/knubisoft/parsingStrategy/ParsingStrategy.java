@@ -1,7 +1,6 @@
 package knubisoft.parsingStrategy;
 
-import knubisoft.DataReadWriteSource;
-import knubisoft.ORMInterface;
+import knubisoft.readWriteSources.DataReadWriteSource;
 import knubisoft.Table;
 
 public interface ParsingStrategy<T extends DataReadWriteSource> {

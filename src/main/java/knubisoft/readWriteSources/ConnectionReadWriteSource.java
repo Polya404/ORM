@@ -1,4 +1,4 @@
-package knubisoft;
+package knubisoft.readWriteSources;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

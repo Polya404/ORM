@@ -1,6 +1,6 @@
 package knubisoft.parsingStrategy;
 
-import knubisoft.FileReadWriteSource;
+import knubisoft.readWriteSources.FileReadWriteSource;
 import knubisoft.Table;
 import lombok.SneakyThrows;
 

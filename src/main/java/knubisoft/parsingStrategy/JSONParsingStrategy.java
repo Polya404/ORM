@@ -2,7 +2,7 @@ package knubisoft.parsingStrategy;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import knubisoft.FileReadWriteSource;
+import knubisoft.readWriteSources.FileReadWriteSource;
 import knubisoft.Table;
 import lombok.SneakyThrows;
 

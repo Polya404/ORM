@@ -1,6 +1,9 @@
 package knubisoft;
 
 import knubisoft.parsingStrategy.*;
+import knubisoft.readWriteSources.ConnectionReadWriteSource;
+import knubisoft.readWriteSources.DataReadWriteSource;
+import knubisoft.readWriteSources.FileReadWriteSource;
 import knubisoft.writeStrategy.*;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FilenameUtils;
