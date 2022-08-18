@@ -2,6 +2,7 @@ package knubisoft;
 
 import knubisoft.classes.Person;
 import knubisoft.dbConnection.DBService;
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class Main {
         URL url3 = Main.class.getClassLoader().getResource("TargetFile.csv");
 
         URL url4 = Main.class.getClassLoader().getResource("dataset.xml");
-        URL url5 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
+
 
         DataReadWriteSource<?> file = new FileReadWriteSource(new File(url4.toURI()));
         List<Person> list = ORM.readAll(file,Person.class);
@@ -39,23 +40,23 @@ public class Main {
         ORM.writeAll(target3, list);
         }
 
-//        DBService dbService = new DBService();
-//        dbService.withConnection(connection -> {
-//            process(connection);
-//            return null;
-//        });
+        DBService dbService = new DBService();
+        process(dbService.connection());
 
     }
 
+    @SneakyThrows
     public static void process(Connection connection) {
-        URL url1 = Main.class.getClassLoader().getResource("dataset.xml");
-        URL url2 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
+        URL url5 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
 
         List<Person> result;
-
-        DataReadWriteSource<ResultSet> rw = new ConnectionReadWriteSource(connection, "person");
+        DataReadWriteSource<ResultSet> rw = new ConnectionReadWriteSource(connection, "persons");
         result = ORM.readAll(rw, Person.class);
-        result.add(new Person("Ilya Vinnik", BigInteger.valueOf(23L), BigInteger.valueOf(1200L), "Manager"));
+
+        DataReadWriteSource<?> file = new FileReadWriteSource(new File(url5.toURI()));
+        List<Person> list = ORM.readAll(file,Person.class);
+
+        ORM.writeAll(rw, list);
 
     }
 }

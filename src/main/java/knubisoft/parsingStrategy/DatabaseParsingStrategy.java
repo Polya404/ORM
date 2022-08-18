@@ -25,7 +25,7 @@ public class DatabaseParsingStrategy implements ParsingStrategy<ConnectionReadWr
         int rowId = 0;
         while (rs.next()) {
             Map<String, String> row = new LinkedHashMap<>();
-            for (int i = 0; i < metaData.getColumnCount(); i++) {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 row.put(metaData.getCatalogName(i), rs.getString(i));
             }
             result.put(rowId, row);

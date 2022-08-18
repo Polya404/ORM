@@ -1,10 +1,7 @@
 package knubisoft;
 
 import knubisoft.parsingStrategy.*;
-import knubisoft.writeStrategy.CSVWriteStrategy;
-import knubisoft.writeStrategy.JSONWriteStrategy;
-import knubisoft.writeStrategy.WriteStrategy;
-import knubisoft.writeStrategy.XMLWriteStrategy;
+import knubisoft.writeStrategy.*;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FilenameUtils;
 
@@ -75,10 +72,6 @@ public class ORM implements ORMInterface {
         }
     }
 
-
-
-
-
     @Override
     public <T> void writeAll(DataReadWriteSource target, List<T> object) {
         if (target instanceof FileReadWriteSource) {
@@ -86,7 +79,8 @@ public class ORM implements ORMInterface {
             writeToFile(strategy, object);
         }
         if (target instanceof ConnectionReadWriteSource){
-            //TODO
+            DataBaseWriteStrategy strategy = new DataBaseWriteStrategy();
+            strategy.write(object);
         }
     }
 

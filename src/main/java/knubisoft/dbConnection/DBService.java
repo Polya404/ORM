@@ -1,5 +1,6 @@
 package knubisoft.dbConnection;
 
+import knubisoft.classes.Person;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
@@ -16,22 +17,11 @@ public class DBService {
     }
 
     @SneakyThrows
-    public void withConnection(Function<Connection,Void> function){
-        try(Connection c = connection()) {
-            try(Statement statement = c.createStatement()) {
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS person " +
-                        "(id INTEGER not NULL, " +
-                        " name VARCHAR(255), " +
-                        " position VARCHAR(255), " +
-                        " age INTEGER, " +
-                        " PRIMARY KEY ( id ))");
-
-                statement.executeUpdate("DELETE FROM person");
-                for (int index = 0; index < 10; index++) {
-                    statement.executeUpdate("INSERT INTO person (name, position, age) VALUES ('1', '1', 1)");
-                }
-            }
-            function.apply(c);
-        }
+    public int addPerson(Person person){
+        Connection connection = connection();
+        Statement statement = connection.createStatement();
+        String SQL = "insert into  persons (name, position, age) value  ('%s', '%s', '%s')";
+        return statement.executeUpdate(String.format(SQL, person.getName(), person.getPosition(), person.getAge()));
     }
+
 }
