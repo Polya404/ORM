@@ -1,6 +1,7 @@
 package knubisoft.writeStrategy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -17,6 +18,7 @@ public class JSONWriteStrategy implements WriteStrategy {
     @SneakyThrows
     public void write(List<?> list) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String jsonString = objectMapper.writeValueAsString(list);
         Files.write(Path.of(file.getPath()), jsonString.getBytes());
     }

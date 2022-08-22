@@ -1,6 +1,7 @@
 package knubisoft.writeStrategy;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -18,6 +19,7 @@ public class XMLWriteStrategy implements WriteStrategy {
     @Override
     public void write(List<?> list) {
         XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.registerModule(new JavaTimeModule());
         String xml = xmlMapper.writeValueAsString(list);
         Files.write(Path.of(file.getPath()), xml.getBytes());
     }
