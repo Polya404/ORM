@@ -1,6 +1,6 @@
 package knubisoft;
 
-import knubisoft.classes.Person;
+import knubisoft.model.Person;
 import knubisoft.dbConnection.DBService;
 import knubisoft.readWriteSources.ConnectionReadWriteSource;
 import knubisoft.readWriteSources.DataReadWriteSource;
@@ -46,7 +46,7 @@ public class Main {
         URL url5 = Main.class.getClassLoader().getResource("MOCK_DATA.json");
 
         List<Person> result;
-        DataReadWriteSource<ResultSet> rw = new ConnectionReadWriteSource(connection, "persons");
+        DataReadWriteSource<ResultSet> rw = new ConnectionReadWriteSource(connection, Person.class);
         result = ORM.readAll(rw, Person.class);
 
         DataReadWriteSource<?> file = new FileReadWriteSource(new File(url5.toURI()));

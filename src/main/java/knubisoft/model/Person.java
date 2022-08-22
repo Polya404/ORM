@@ -1,4 +1,4 @@
-package knubisoft.classes;
+package knubisoft.model;
 
 import knubisoft.TableAnnotation;
 import lombok.AllArgsConstructor;

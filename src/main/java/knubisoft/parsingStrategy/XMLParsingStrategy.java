@@ -12,8 +12,6 @@ import java.util.Map;
 
 
 public class XMLParsingStrategy implements ParsingStrategy<FileReadWriteSource> {
-    JSONParsingStrategy jsonParsingStrategy = new JSONParsingStrategy();
-
     @SneakyThrows
     @Override
     public Table parseToTable(FileReadWriteSource content) {
